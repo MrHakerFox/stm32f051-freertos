@@ -30,7 +30,7 @@
         <option>
           <name>Variant</name>
           <version>20</version>
-          <state>0</state>
+          <state>34</state>
         </option>
         <option>
           <name>GEndianMode</name>
@@ -107,7 +107,7 @@
         </option>
         <option>
           <name>GEndianModeBE</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>OGBufferedTerminalOutput</name>
@@ -138,12 +138,12 @@
         <option>
           <name>GFPUCoreSlave</name>
           <version>20</version>
-          <state>0</state>
+          <state>34</state>
         </option>
         <option>
           <name>GBECoreSlave</name>
           <version>20</version>
-          <state>0</state>
+          <state>34</state>
         </option>
         <option>
           <name>OGUseCmsis</name>
@@ -257,7 +257,7 @@
         </option>
         <option>
           <name>CCLangConformance</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>CCSignedPlainChar</name>
@@ -301,7 +301,10 @@
         </option>
         <option>
           <name>CCIncludePath2</name>
-          <state></state>
+          <state>$PROJ_DIR$</state>
+          <state>$PROJ_DIR$\FreeRTOS</state>
+          <state>$PROJ_DIR$\FreeRTOS\include</state>
+          <state>$PROJ_DIR$\FreeRTOS\portable\IAR\ARM_CM0</state>
         </option>
         <option>
           <name>CCStdIncCheck</name>
@@ -313,7 +316,7 @@
         </option>
         <option>
           <name>IInterwork2</name>
-          <state>1</state>
+          <state>0</state>
         </option>
         <option>
           <name>IProcessorMode2</name>
@@ -384,7 +387,7 @@
         </option>
         <option>
           <name>IccCppInlineSemantics</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>IccCmsis</name>
@@ -559,7 +562,7 @@
         </option>
         <option>
           <name>AUserIncludes</name>
-          <state></state>
+          <state>$PROJ_DIR$</state>
         </option>
         <option>
           <name>AExtraOptionsCheckV2</name>
@@ -707,11 +710,11 @@
         </option>
         <option>
           <name>IlinkIcfOverride</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>IlinkIcfFile</name>
-          <state>$TOOLKIT_DIR$\CONFIG\generic.icf</state>
+          <state>$PROJ_DIR$\stm32f0xx_flash.icf</state>
         </option>
         <option>
           <name>IlinkIcfFileSlave</name>
@@ -771,7 +774,7 @@
         </option>
         <option>
           <name>IlinkProgramEntryLabel</name>
-          <state></state>
+          <state>__iar_program_start</state>
         </option>
         <option>
           <name>DoFill</name>
@@ -1949,18 +1952,30 @@
         <name>MemMang</name>
         <file>
           <name>$PROJ_DIR$\FreeRTOS\portable\MemMang\heap_1.c</name>
+          <excluded>
+            <configuration>Debug</configuration>
+          </excluded>
         </file>
         <file>
           <name>$PROJ_DIR$\FreeRTOS\portable\MemMang\heap_2.c</name>
         </file>
         <file>
           <name>$PROJ_DIR$\FreeRTOS\portable\MemMang\heap_3.c</name>
+          <excluded>
+            <configuration>Debug</configuration>
+          </excluded>
         </file>
         <file>
           <name>$PROJ_DIR$\FreeRTOS\portable\MemMang\heap_4.c</name>
+          <excluded>
+            <configuration>Debug</configuration>
+          </excluded>
         </file>
         <file>
           <name>$PROJ_DIR$\FreeRTOS\portable\MemMang\heap_5.c</name>
+          <excluded>
+            <configuration>Debug</configuration>
+          </excluded>
         </file>
       </group>
     </group>

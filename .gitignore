@@ -1,0 +1,5 @@
+Debug/*
+*.dep
+settings/*
+*.sfr
+*.tmp

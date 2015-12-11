@@ -91,20 +91,17 @@
 #include "FreeRTOS.h"
 #include "task.h"
 
+#include <CSysClock.hpp>
+
 
 void systemClockInit()
 {
+	if( cSysClockWrapper( HSE ) )
+	{
+    	for( ;; );
+  	}
 }
 
-
-
-/*-----------------------------------------------------------*/
-
-/*
- * Perform any application specific hardware configuration.  The clocks,
- * memory, etc. are configured before main() is called.
- */
-static void prvSetupHardware( void );
 
 
 /*-----------------------------------------------------------*/

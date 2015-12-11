@@ -3,24 +3,24 @@
 
 #include <stdint.h>
 
-#ifdef __cplusplus
-namespace HS_XT
+enum TSysClockType
 {
-    enum name
-    {
-        HSI,
-        HSE,
-    };
-}
+	HSI,
+	HSE,
+};
 
+
+#ifdef __cplusplus
 class CSysClock
 {
 	private:
 
 	
 	public:
-          static int init(HS_XT::name source_clock);
+          static int init( TSysClockType source_clock);
 };
+
+extern "C" int cSysClockWrapper( TSysClockType source );
 #endif // __cplusplus
 
 

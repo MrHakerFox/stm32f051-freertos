@@ -1,0 +1,65 @@
+/*************************************************************************
+ * Имя файла              : config.hpp
+ *
+ *
+ * Описание               : настройки проекта
+ *
+ *
+ *************************************************************************/
+#ifndef CONFIG_HPP
+#define CONFIG_HPP
+
+#include "FreeRTOS.h"
+#include "task.h"
+
+
+#define SYSTEM_CLOCK            48000000UL   
+
+#define delayMs(ms)             vTaskDelay(MSEC(ms))
+#define halGetSysCounter()      xTaskGetTickCount()
+
+#ifdef __cplusplus
+
+// Скорость работы USART1
+const uint32_t USART1_BAUDRATE          = 115200;
+// Скорость работы USART2
+const uint32_t USART2_BAUDRATE          = 115200;
+// Тайм-аут для последовательных портов
+const int USART_RX_TIMEOUT				= 1000000;
+const int USART_TX_TIMEOUT				= 100000;
+
+#endif // __cplusplus
+
+/* Всякие отладочные няшки */
+// Если объявлена, то все няшки можно включать или выключать
+// Если не объявлена, то няшки автоматом гасятся
+#define DEBUG_GLOBAL_NYASHKA
+
+
+#ifdef DEBUG_GLOBAL_NYASHKA
+
+/* Начиная отсюда, объявляем наши макросы управления дебагом */
+// Если объявлена, то в окне активации появляется кнопочка генерации лицензий
+// на юсьфлешку
+#define DEBUG_GENERATE_LIC_FILE
+
+// Вывод состояний конечного автомата измерений
+#define DEBUG_MEAS_STATE_MACHINE
+
+// Вывод отладочной информации измерительного модуля
+#define DEBUG_MEAS_CORE_NEW
+
+// Вывод отладочной информации измерительной платы
+#define DEBUG_MEAS_BOARD
+
+// Работа со старой платой Мики (где небыло долби диджитал surround ex, и тач хило висел)
+//#define DEBUG_OLD_BOARD
+
+#endif  // DEBUG_GLOBAL_NYASHKA
+
+
+/** Если используем ОСРВ, то установить в единицу. Иначе в ноль */
+#define USE_RTOS		1
+
+
+#endif

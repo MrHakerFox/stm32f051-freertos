@@ -257,7 +257,7 @@
         </option>
         <option>
           <name>CCLangConformance</name>
-          <state>1</state>
+          <state>0</state>
         </option>
         <option>
           <name>CCSignedPlainChar</name>
@@ -305,6 +305,8 @@
           <state>$PROJ_DIR$\FreeRTOS</state>
           <state>$PROJ_DIR$\FreeRTOS\include</state>
           <state>$PROJ_DIR$\FreeRTOS\portable\IAR\ARM_CM0</state>
+          <state>$PROJ_DIR$\DRIVERS\Internal\CSysClock</state>
+          <state>$PROJ_DIR$\DRIVERS\Internal\CMSIS</state>
         </option>
         <option>
           <name>CCStdIncCheck</name>
@@ -359,7 +361,7 @@
         </option>
         <option>
           <name>IccLang</name>
-          <state>0</state>
+          <state>2</state>
         </option>
         <option>
           <name>IccCDialect</name>
@@ -1888,6 +1890,33 @@
     </settings>
   </configuration>
   <group>
+    <name>DRIVERS</name>
+    <group>
+      <name>External</name>
+    </group>
+    <group>
+      <name>Internal</name>
+      <group>
+        <name>CMSIS</name>
+        <file>
+          <name>$PROJ_DIR$\DRIVERS\Internal\CMSIS\core_cm0.h</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$\DRIVERS\Internal\CMSIS\stm32f0xx.h</name>
+        </file>
+      </group>
+      <group>
+        <name>CSysClock</name>
+        <file>
+          <name>$PROJ_DIR$\DRIVERS\Internal\CSysClock\CSysClock.cpp</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$\DRIVERS\Internal\CSysClock\CSysClock.hpp</name>
+        </file>
+      </group>
+    </group>
+  </group>
+  <group>
     <name>FreeRTOS</name>
     <group>
       <name>Include</name>
@@ -1998,8 +2027,14 @@
       <name>$PROJ_DIR$\FreeRTOS\timers.c</name>
     </file>
   </group>
+  <group>
+    <name>MODULES</name>
+  </group>
   <file>
     <name>$PROJ_DIR$\FreeRTOSConfig.h</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\global_config.hpp</name>
   </file>
   <file>
     <name>$PROJ_DIR$\main.c</name>

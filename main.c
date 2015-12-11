@@ -92,7 +92,7 @@
 #include "task.h"
 
 
-void SystemInit()
+void systemClockInit()
 {
 }
 

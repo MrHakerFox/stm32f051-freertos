@@ -116,14 +116,24 @@ int main( void )
 	
 	gpioInit();
 	
-	BaseType_t result = xTaskCreate(	setupTask,
+	BaseType_t setupTaskResult = xTaskCreate(
+										setupTask,
 										"setup",
 										SETUP_TASK_STACK_SIZE,
 										( void * )NULL,
 										SETUP_TASK_PRIORITY,
 										NULL );
 	
-	if( result == pdPASS )
+	BaseType_t consoleTaskResult = xTaskCreate(
+										consoleTask,
+										"console",
+										CONSOLE_TASK_STACK_SIZE,
+										( void * )NULL,
+										CONSOLE_TASK_PRIORITY,
+										NULL );	
+	
+	if( setupTaskResult == pdPASS &&
+	   consoleTaskResult == pdPASS )
 	{
 		vTaskStartScheduler();
 	}

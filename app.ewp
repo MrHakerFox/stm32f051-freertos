@@ -2034,6 +2034,9 @@
     <group>
       <name>OS_TASKS</name>
       <file>
+        <name>$PROJ_DIR$\Modules\OS_TASKS\consoleTask.c</name>
+      </file>
+      <file>
         <name>$PROJ_DIR$\Modules\OS_TASKS\setupTask.c</name>
       </file>
       <file>

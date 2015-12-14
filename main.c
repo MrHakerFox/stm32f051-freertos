@@ -112,6 +112,8 @@ void systemClockInit()
 
 int main( void )
 {
+	systemClockInit();
+	
 	gpioInit();
 	
 	BaseType_t result = xTaskCreate(	setupTask,
@@ -125,6 +127,8 @@ int main( void )
 	{
 		vTaskStartScheduler();
 	}
+	
+	for( ; ; );
 	
 	return 0;
 }

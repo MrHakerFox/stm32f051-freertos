@@ -135,8 +135,8 @@ Reset_Handler
         CMP      R2,R0
         BCS.N    ??x_0
 
-        LDR     R0, =systemClockInit
-        BLX     R0
+//        LDR     R0, =systemClockInit
+//        BLX     R0
         LDR     R0, =__iar_program_start
         BX      R0
 

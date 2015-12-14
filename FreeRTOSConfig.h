@@ -97,7 +97,7 @@
 #define configMAX_PRIORITIES			( 5 )
 #define configMINIMAL_STACK_SIZE		( ( unsigned short ) 60 )
 #define configTOTAL_HEAP_SIZE			( ( size_t ) ( 6500 ) )
-#define configMAX_TASK_NAME_LEN			( 5 )
+#define configMAX_TASK_NAME_LEN			( 10 )
 #define configUSE_TRACE_FACILITY		1
 #define configUSE_16_BIT_TICKS			0
 #define configIDLE_SHOULD_YIELD			1
@@ -133,6 +133,8 @@ to exclude the API function. */
 /* Normal assert() semantics without relying on the provision of an assert.h
 header file. */
 #define configASSERT( x ) if( ( x ) == 0 ) { taskDISABLE_INTERRUPTS(); for( ;; ); }
+	
+#define MSEC(msec)				( (portTickType)(msec) / portTICK_RATE_MS )
 
 /* Definitions that map the FreeRTOS port interrupt handlers to their CMSIS
 standard names - or at least those used in the unmodified vector table. */

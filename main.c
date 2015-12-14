@@ -92,8 +92,14 @@
 #include "task.h"
 
 #include <CSysClock.hpp>
+#include <Post.h>
+#include <tasksConfig.h>
 
 
+
+/*!
+Only set up the system clock
+*/
 void systemClockInit()
 {
 	if( cSysClockWrapper( HSE ) )
@@ -104,12 +110,22 @@ void systemClockInit()
 
 
 
-/*-----------------------------------------------------------*/
-
 int main( void )
 {
-
-
+	gpioInit();
+	
+	BaseType_t result = xTaskCreate(	setupTask,
+										"setup",
+										SETUP_TASK_STACK_SIZE,
+										( void * )NULL,
+										SETUP_TASK_PRIORITY,
+										NULL );
+	
+	if( result == pdPASS )
+	{
+		vTaskStartScheduler();
+	}
+	
 	return 0;
 }
 

@@ -14,21 +14,9 @@
 
 
 #define SYSTEM_CLOCK            48000000UL   
+uint32_t SystemCoreClock = SYSTEM_CLOCK;
 
-#define delayMs(ms)             vTaskDelay(MSEC(ms))
-#define halGetSysCounter()      xTaskGetTickCount()
 
-#ifdef __cplusplus
-
-// Скорость работы USART1
-const uint32_t USART1_BAUDRATE          = 115200;
-// Скорость работы USART2
-const uint32_t USART2_BAUDRATE          = 115200;
-// Тайм-аут для последовательных портов
-const int USART_RX_TIMEOUT				= 1000000;
-const int USART_TX_TIMEOUT				= 100000;
-
-#endif // __cplusplus
 
 /* Всякие отладочные няшки */
 // Если объявлена, то все няшки можно включать или выключать

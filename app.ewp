@@ -307,6 +307,8 @@
           <state>$PROJ_DIR$\FreeRTOS\portable\IAR\ARM_CM0</state>
           <state>$PROJ_DIR$\DRIVERS\Internal\CSysClock</state>
           <state>$PROJ_DIR$\DRIVERS\Internal\CMSIS</state>
+          <state>$PROJ_DIR$\Modules\Post</state>
+          <state>$PROJ_DIR$\Modules\OS_TASKS</state>
         </option>
         <option>
           <name>CCStdIncCheck</name>
@@ -2029,12 +2031,33 @@
   </group>
   <group>
     <name>MODULES</name>
+    <group>
+      <name>OS_TASKS</name>
+      <file>
+        <name>$PROJ_DIR$\Modules\OS_TASKS\setupTask.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\Modules\OS_TASKS\tasksConfig.h</name>
+      </file>
+    </group>
+    <group>
+      <name>Post</name>
+      <file>
+        <name>$PROJ_DIR$\Modules\Post\Post.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\Modules\Post\Post.h</name>
+      </file>
+    </group>
   </group>
   <file>
     <name>$PROJ_DIR$\FreeRTOSConfig.h</name>
   </file>
   <file>
     <name>$PROJ_DIR$\global_config.hpp</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\gpio_macros.h</name>
   </file>
   <file>
     <name>$PROJ_DIR$\main.c</name>

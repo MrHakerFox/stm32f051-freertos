@@ -8,11 +8,21 @@
 
 void setupTask( void * pvParameters )
 {
-	for( ; ; )
-	{
-		vTaskDelay( MSEC( 10 ) );
-		SET_GPIO_SET( GPIOB, 3 );
-		vTaskDelay( MSEC( 10 ) );
-		SET_GPIO_CLR( GPIOB, 3 );
-	}
+	BaseType_t consoleTaskResult = xTaskCreate(
+										consoleTask,
+										"console",
+										CONSOLE_TASK_STACK_SIZE,
+										( void * )NULL,
+										CONSOLE_TASK_PRIORITY,
+										NULL );	
+	
+	BaseType_t liveLedTaskResult = xTaskCreate(
+										liveLedTask,
+										"liveLed",
+										LIVELED_TASK_STACK_SIZE,
+										( void * )NULL,
+										LIVELED_TASK_PRIORITY,
+										NULL );	
+	
+	vTaskDelete( NULL );
 }

@@ -11,7 +11,7 @@
 
 
 
-class CSerialDriver : public CAbstractSerialDriver
+class CStm32FxxSerialDriver : public CAbstractSerialDriver
 {
 	private:
 	
@@ -26,7 +26,11 @@ class CSerialDriver : public CAbstractSerialDriver
 	/** Physical number of STM32FXX */
 	enum TUartNum { N1, N2 };
 	
-	TRetVal open( TUartNum num );
+	CStm32FxxSerialDriver( TUartNum );
+	
+	TRetVal open();
+	
+	TRetVal write( const char * data );
 };
 
 

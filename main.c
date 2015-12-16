@@ -97,19 +97,6 @@
 
 
 
-/*!
-Only set up the system clock
-*/
-void systemClockInit()
-{
-	if( cSysClockWrapper( HSE ) )
-	{
-    	for( ;; );
-  	}
-}
-
-
-
 int main( void )
 {
 	systemClockInit();
@@ -124,23 +111,12 @@ int main( void )
 										SETUP_TASK_PRIORITY,
 										NULL );
 	
-	BaseType_t consoleTaskResult = xTaskCreate(
-										consoleTask,
-										"console",
-										CONSOLE_TASK_STACK_SIZE,
-										( void * )NULL,
-										CONSOLE_TASK_PRIORITY,
-										NULL );	
-	
-	if( setupTaskResult == pdPASS &&
-	   consoleTaskResult == pdPASS )
+	if( setupTaskResult == pdPASS )
 	{
 		vTaskStartScheduler();
 	}
 	
 	for( ; ; );
-	
-	return 0;
 }
 
 

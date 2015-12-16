@@ -7,6 +7,20 @@
 
 
 
+/*!
+Only set up the system clock
+*/
+void systemClockInit()
+{
+	if( cSysClockWrapper( HSE ) )
+	{
+    	for( ;; );
+  	}
+}
+
+
+
+
 void gpioInit()
 {
 	RCC->AHBENR |= RCC_AHBENR_GPIOBEN;	

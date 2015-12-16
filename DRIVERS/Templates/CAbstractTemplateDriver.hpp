@@ -19,14 +19,14 @@ class CAbstractTemplateDriver
 	
 	
 	public:
-	virtual TRetVal open();
+	virtual TRetVal open() { return rvFAILED; }
 	
-	virtual TRetVal write( const char * data );
-	virtual TRetVal read( char * data, int read, int timeout = 0 );
+	virtual TRetVal write( const char * data )  { return rvFAILED; }
+	virtual TRetVal read( char * data, int read, int timeout = 0 )  { return rvFAILED; }
 	
-	virtual TRetVal close();
+	virtual TRetVal close()  { return rvFAILED; }
 	
-	virtual TRetVal ioctl( TIoCtlNum num, TIoCtlParam * param );
+	virtual TRetVal ioctl( TIoCtlNum num, TIoCtlParam * param )  { return rvFAILED; }
 };
 
 

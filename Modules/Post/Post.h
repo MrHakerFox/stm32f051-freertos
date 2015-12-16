@@ -3,6 +3,11 @@
 
 
 
+#include <CSysClock.hpp>
+
+
+
+void systemClockInit();
 void gpioInit();
 
 

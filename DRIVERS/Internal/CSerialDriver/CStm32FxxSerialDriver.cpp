@@ -95,3 +95,31 @@ TRetVal CStm32FxxSerialDriver::write( const char * data, int size, int timeout )
 	}
 	return rvOK;
 }
+
+
+
+/*!
+Use the function to read some data
+
+@param *data - pointer to the data to be read
+@param size - size of buffer where the data will be placed
+@param *read - pointer to the variable where actual number of read bytes will be placed
+@param timeout - timeout in milliseconds
+
+\return see RetVals.hpp file
+*/
+TRetVal CStm32FxxSerialDriver::read( char * data, int size, int * read, int timeout )
+{
+}
+
+
+
+/*!
+Use the function to close the driver
+
+\return see RetVals.hpp file
+*/
+TRetVal CStm32FxxSerialDriver::close()
+{
+	return rvOK;
+}

@@ -27,8 +27,8 @@ class CAbstractTemplateDriver
 	public:
 	virtual TRetVal open() { return rvFAILED; }
 	
-	virtual TRetVal write( const char * data )  { return rvFAILED; }
-	virtual TRetVal read( char * data, int read, int timeout = 0 )  { return rvFAILED; }
+	virtual TRetVal write( const char * data, int size, int timeout = 0 )  { return rvFAILED; }
+	virtual TRetVal read( char * data, int size, int read, int timeout = 0 )  { return rvFAILED; }
 	
 	virtual TRetVal close()  { return rvFAILED; }
 	

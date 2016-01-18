@@ -36,6 +36,12 @@ const int USART1_INSTANT_GET_MAX_BYTE	= 128;
 const int USART2_INSTANT_SEND_MAX_BYTE	= 128;
 const int USART2_INSTANT_GET_MAX_BYTE	= 128;
 
+const int USART1_TX_TIMEOUT				= 10;
+const int USART1_RX_TIMEOUT				= 10;
+
+const int USART2_TX_TIMEOUT				= 10;
+const int USART2_RX_TIMEOUT				= 10;
+
 
 
 
@@ -61,7 +67,7 @@ class CStm32FxxSerialDriver : 	public CAbstractSerialDriver
 	
 	TRetVal open();
 	
-	TRetVal write( const char * data );
+	TRetVal write( const char * data, int size, int timeout = 0 );
 };
 
 

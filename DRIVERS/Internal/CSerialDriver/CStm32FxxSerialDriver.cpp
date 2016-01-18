@@ -80,11 +80,18 @@ TRetVal CStm32FxxSerialDriver::open()
 /*!
 Use the function to write some buffer
 
+@param *data - pointer to the data to be transmitted
+@param size - size of data buffer
+@param timeout - timeout in milliseconds. 0 - wait as long as need.
+
 \return see RetVals.hpp file
 */
-TRetVal CStm32FxxSerialDriver::write( const char * data )
+TRetVal CStm32FxxSerialDriver::write( const char * data, int size, int timeout )
 {
-	int len = sizeof( *data );
-	
+	while( size-- )
+	{
+	  	while( !( USARTn->ISR & USART_ISR_TXE ) );
+	  	USARTn->TDR = *data++;
+	}
 	return rvOK;
 }

@@ -18,7 +18,7 @@ CConsole * CConsole::_self = 0;
 
 
 #warning change to proxy driver
-CStm32FxxSerialDriver serial( CStm32FxxSerialDriver::N2 );
+CStm32FxxSerialDriver serial( CStm32FxxSerialDriver::N1 );
 
 
 
@@ -28,10 +28,14 @@ void cConsoleWrapper()
 	const char data[] = "\r\nHi! This is FreeRTOS console!";
 	
 	TRetVal retVal = serial.open();
+    if( retVal != rvOK )
+	{
+		vTaskSuspend( NULL );
+    }
 	
 	for( ; ; )
 	{
-		serial.write( data );
+		retVal = serial.write( data, sizeof( data ) );
 		
 		delayMs( 1000 );
 	}

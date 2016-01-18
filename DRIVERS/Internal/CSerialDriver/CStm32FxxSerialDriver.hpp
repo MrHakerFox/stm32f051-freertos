@@ -7,14 +7,49 @@
 
 
 
+#include <stm32f0xx.h>
+#include <global_config.hpp>
+#include <CRingBuffer.hpp>
+
+
+
+#define USART1_TX_PORT                  GPIOA
+#define USART1_TX_PIN                   9
+#define USART1_RX_PORT                  GPIOA
+#define USART1_RX_PIN                   10
+
+#define USART2_TX_PORT                  GPIOA
+#define USART2_TX_PIN                   14
+#define USART2_RX_PORT                  GPIOA
+#define USART2_RX_PIN                   15
 
 
 
 
-class CStm32FxxSerialDriver : public CAbstractSerialDriver
+#warning to config file
+const int USART1_DEFAULT_BAUDRATE		= 115200;
+const int USART2_DEFAULT_BAUDRATE		= 115200;
+
+const int USART1_INSTANT_SEND_MAX_BYTE	= 128;
+const int USART1_INSTANT_GET_MAX_BYTE	= 128;
+
+const int USART2_INSTANT_SEND_MAX_BYTE	= 128;
+const int USART2_INSTANT_GET_MAX_BYTE	= 128;
+
+
+
+
+
+
+class CStm32FxxSerialDriver : 	public CAbstractSerialDriver
 {
-	private:
+	public:
+	/** Physical number of STM32FXX */
+	enum TUartNum { N1, N2 };	
 	
+	private:
+	TUartNum hdwNum;
+	USART_TypeDef *USARTn;
 	
 	
 	protected:
@@ -22,11 +57,7 @@ class CStm32FxxSerialDriver : public CAbstractSerialDriver
 	
 	
 	public:
-	
-	/** Physical number of STM32FXX */
-	enum TUartNum { N1, N2 };
-	
-	CStm32FxxSerialDriver( TUartNum );
+	CStm32FxxSerialDriver( TUartNum num );
 	
 	TRetVal open();
 	

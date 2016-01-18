@@ -14,6 +14,8 @@ enum TRetVal
 	/** Common result values */
     rvOK                        = 0x00,		/** No eerors during the operation */
     rvFAILED                    = 0x01,    	/** Function completed with general error */
+	
+	rvSETTING_ERROR				= 0x03,		/** Input parameters are incorrect */
 };
 
 

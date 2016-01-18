@@ -1,0 +1,1 @@
+Porting FreeRTOS to STM32F051 with all needed (serial port drivers, console, memmanagers and so on) services.

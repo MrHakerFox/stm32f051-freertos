@@ -97,11 +97,17 @@
 
 
 
+#include <global_config.hpp>
+
+
+/** Just for FreeRTOS (see FreeRTOSConfig.h) */
+uint32_t SystemCoreClock = SYSTEM_CLOCK;
+
+
+
 int main( void )
 {
 	systemClockInit();
-	
-	gpioInit();
 	
 	BaseType_t setupTaskResult = xTaskCreate(
 										setupTask,

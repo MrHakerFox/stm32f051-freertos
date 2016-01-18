@@ -312,6 +312,8 @@
           <state>$PROJ_DIR$\Modules\Post</state>
           <state>$PROJ_DIR$\Modules\OS_TASKS</state>
           <state>$PROJ_DIR$\Modules\CConsole</state>
+          <state>$PROJ_DIR$\Modules\LIbs\CRingBuffer</state>
+          <state>$PROJ_DIR$\Modules\LIbs\CppNewRedef</state>
         </option>
         <option>
           <name>CCStdIncCheck</name>
@@ -872,7 +874,7 @@
         </option>
         <option>
           <name>IlinkOptInline</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>IlinkOptExceptionsAllow</name>
@@ -888,7 +890,7 @@
         </option>
         <option>
           <name>IlinkOptMergeDuplSections</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>IlinkOptUseVfe</name>
@@ -2060,6 +2062,24 @@
       <file>
         <name>$PROJ_DIR$\Modules\CConsole\CConsole.hpp</name>
       </file>
+    </group>
+    <group>
+      <name>Libs</name>
+      <group>
+        <name>CppNewRedef</name>
+        <file>
+          <name>$PROJ_DIR$\Modules\Libs\CppNewRedef\CppNewRedef.c</name>
+        </file>
+      </group>
+      <group>
+        <name>CRingBuffer</name>
+        <file>
+          <name>$PROJ_DIR$\Modules\Libs\CRingBuffer\CRingBuffer.cpp</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$\Modules\Libs\CRingBuffer\CRingBuffer.hpp</name>
+        </file>
+      </group>
     </group>
     <group>
       <name>OS_TASKS</name>

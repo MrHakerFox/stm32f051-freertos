@@ -8,7 +8,6 @@
 
 
 void systemClockInit();
-void gpioInit();
 
 
 

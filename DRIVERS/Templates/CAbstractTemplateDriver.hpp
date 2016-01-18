@@ -1,3 +1,9 @@
+/**
+	\brief This template is a base for creating any drivers
+*/
+
+
+
 #ifndef CABSTRACT_DRIVER_TEMPLATE_HHP
 #define CABSTRACT_DRIVER_TEMPLATE_HHP
 

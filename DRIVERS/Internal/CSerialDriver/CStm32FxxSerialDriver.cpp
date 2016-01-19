@@ -16,6 +16,7 @@
 
 extern "C" void USART1_IRQHandler()
 {
+	CStm32FxxSerialDriver::isrService( CStm32FxxSerialDriver::N1 );
 	NVIC_ClearPendingIRQ( USART1_IRQn );
 }
 
@@ -23,6 +24,7 @@ extern "C" void USART1_IRQHandler()
 
 extern "C" void USART2_IRQHandler()
 {
+	CStm32FxxSerialDriver::isrService( CStm32FxxSerialDriver::N2 );
 	NVIC_ClearPendingIRQ( USART2_IRQn );
 }
 
@@ -135,4 +137,20 @@ Use the function to close the driver
 TRetVal CStm32FxxSerialDriver::close()
 {
 	return rvOK;
+}
+
+
+
+/*!
+This is an Interrupt Service Routine
+
+@param num - number of physical usart
+*/
+void CStm32FxxSerialDriver::isrService( TUartNum num)
+{
+	BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+	
+	vTaskNotifyGiveFromISR( xTaskToNotify[ num ], &xHigherPriorityTaskWoken );
+	
+	portYIELD_FROM_ISR( xHigherPriorityTaskWoken );
 }

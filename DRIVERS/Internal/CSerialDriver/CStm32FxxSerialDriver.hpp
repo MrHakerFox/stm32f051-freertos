@@ -42,6 +42,8 @@ class CStm32FxxSerialDriver : 	public CAbstractSerialDriver
 	TRetVal read( char * data, int size, int * read, int timeout = 0 );
 	
 	TRetVal close();
+	
+	static void isrService( TUartNum num);
 };
 
 

@@ -136,7 +136,7 @@ header file. */
 	
 #define MSEC(msec)				( (portTickType)(msec) / portTICK_RATE_MS )
 	
-#define delayMs(msec)				( vTaskDelay( msec ) )
+#define delayMs(msec)				( vTaskDelay( MSEC( msec ) ) )
 
 /* Definitions that map the FreeRTOS port interrupt handlers to their CMSIS
 standard names - or at least those used in the unmodified vector table. */

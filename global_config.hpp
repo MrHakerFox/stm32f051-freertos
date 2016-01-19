@@ -8,12 +8,9 @@
 #include "task.h"
 
 
+/** CPU Core Clock, Hz */
 #define SYSTEM_CLOCK            48000000UL   
 
-
-
-/** Если используем ОСРВ, то установить в единицу. Иначе в ноль */
-#define USE_RTOS		1
 
 
 #endif

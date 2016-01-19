@@ -13,6 +13,10 @@
 
 
 
+#include <FreeRTOS.h>
+
+
+
 template< class TIoCtlNum, class TIoCtlParam >
 class CAbstractTemplateDriver
 {

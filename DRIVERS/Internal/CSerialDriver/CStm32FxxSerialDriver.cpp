@@ -14,6 +14,20 @@
 
 
 
+extern "C" void USART1_IRQHandler()
+{
+	NVIC_ClearPendingIRQ( USART1_IRQn );
+}
+
+
+
+extern "C" void USART2_IRQHandler()
+{
+	NVIC_ClearPendingIRQ( USART2_IRQn );
+}
+
+
+
 CStm32FxxSerialDriver::CStm32FxxSerialDriver( TUartNum num )
 {
 	hdwNum = num;
@@ -82,18 +96,17 @@ Use the function to write some buffer
 
 @param *data - pointer to the data to be transmitted
 @param size - size of data buffer
-@param timeout - timeout in milliseconds. 0 - wait as long as need.
+@param timeout - timeout (ms) for ALL the data
 
 \return see RetVals.hpp file
 */
 TRetVal CStm32FxxSerialDriver::write( const char * data, int size, int timeout )
 {
-	while( size-- )
-	{
-	  	while( !( USARTn->ISR & USART_ISR_TXE ) );
-	  	USARTn->TDR = *data++;
-	}
-	return rvOK;
+	xTaskToNotify[ hdwNum ] = xTaskGetCurrentTaskHandle();
+	
+	uint32_t ulNotificationValue = ulTaskNotifyTake( pdTRUE, pdMS_TO_TICKS( timeout ) );
+	
+	return ulNotificationValue == 1 ? rvOK : rvTIME_OUT;
 }
 
 

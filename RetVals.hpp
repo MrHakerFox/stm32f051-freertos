@@ -16,6 +16,8 @@ enum TRetVal
     rvFAILED                    = 0x01,    	/** Function completed with general error */
 	
 	rvSETTING_ERROR				= 0x03,		/** Input parameters are incorrect */
+	
+	rvTIME_OUT					= 0x05,		/** Operation finished with timeout */
 };
 
 

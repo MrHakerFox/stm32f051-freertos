@@ -4,6 +4,7 @@
 
 
 #include <CAbstractSerialDriver.hpp>
+#include "CStm32FxxSerialDriverConfig.hpp"
 
 
 
@@ -13,49 +14,19 @@
 
 
 
-#define USART1_TX_PORT                  GPIOA
-#define USART1_TX_PIN                   9
-#define USART1_RX_PORT                  GPIOA
-#define USART1_RX_PIN                   10
-
-#define USART2_TX_PORT                  GPIOA
-#define USART2_TX_PIN                   14
-#define USART2_RX_PORT                  GPIOA
-#define USART2_RX_PIN                   15
-
-
-
-
-#warning to config file
-const int USART1_DEFAULT_BAUDRATE		= 115200;
-const int USART2_DEFAULT_BAUDRATE		= 115200;
-
-const int USART1_INSTANT_SEND_MAX_BYTE	= 128;
-const int USART1_INSTANT_GET_MAX_BYTE	= 128;
-
-const int USART2_INSTANT_SEND_MAX_BYTE	= 128;
-const int USART2_INSTANT_GET_MAX_BYTE	= 128;
-
-const int USART1_TX_TIMEOUT				= 10;
-const int USART1_RX_TIMEOUT				= 10;
-
-const int USART2_TX_TIMEOUT				= 10;
-const int USART2_RX_TIMEOUT				= 10;
-
-
-
-
-
 
 class CStm32FxxSerialDriver : 	public CAbstractSerialDriver
 {
 	public:
 	/** Physical number of STM32FXX */
-	enum TUartNum { N1, N2 };	
+	enum TUartNum { N1 = 0, N2 = 1 };	
+	
+	
 	
 	private:
 	TUartNum hdwNum;
 	USART_TypeDef *USARTn;
+	TaskHandle_t xTaskToNotify[ TOTAL_USART_NUM ];
 	
 	
 	protected:

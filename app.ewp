@@ -1920,6 +1920,9 @@
         <file>
           <name>$PROJ_DIR$\DRIVERS\Internal\CSerialDriver\CStm32FxxSerialDriver.hpp</name>
         </file>
+        <file>
+          <name>$PROJ_DIR$\DRIVERS\Internal\CSerialDriver\CStm32FxxSerialDriverConfig.hpp</name>
+        </file>
       </group>
       <group>
         <name>CSysClock</name>
@@ -2073,6 +2076,9 @@
       </group>
       <group>
         <name>CRingBuffer</name>
+        <excluded>
+          <configuration>Debug</configuration>
+        </excluded>
         <file>
           <name>$PROJ_DIR$\Modules\Libs\CRingBuffer\CRingBuffer.cpp</name>
         </file>

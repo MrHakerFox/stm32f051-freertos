@@ -35,7 +35,12 @@ void cConsoleWrapper()
 	
 	for( ; ; )
 	{
-		retVal = serial.write( data, sizeof( data ) );
+		retVal = serial.write( data, sizeof( data ), 100 );
+		
+		if( retVal != rvOK )
+		{
+			vTaskSuspend( NULL );
+		}
 		
 		delayMs( 1000 );
 	}

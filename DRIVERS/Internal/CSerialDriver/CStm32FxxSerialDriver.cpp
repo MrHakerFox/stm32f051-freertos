@@ -13,6 +13,9 @@
 #include <FreeRTOS.h>
 
 
+TaskHandle_t CStm32FxxSerialDriver::xTaskToNotify[ TOTAL_USART_NUM ];
+
+
 
 extern "C" void USART1_IRQHandler()
 {
@@ -104,7 +107,7 @@ Use the function to write some buffer
 */
 TRetVal CStm32FxxSerialDriver::write( const char * data, int size, int timeout )
 {
-	xTaskToNotify[ hdwNum ] = xTaskGetCurrentTaskHandle();
+	CStm32FxxSerialDriver::xTaskToNotify[ hdwNum ] = xTaskGetCurrentTaskHandle();
 	
 	uint32_t ulNotificationValue = ulTaskNotifyTake( pdTRUE, pdMS_TO_TICKS( timeout ) );
 	
@@ -150,7 +153,7 @@ void CStm32FxxSerialDriver::isrService( TUartNum num)
 {
 	BaseType_t xHigherPriorityTaskWoken = pdFALSE;
 	
-	vTaskNotifyGiveFromISR( xTaskToNotify[ num ], &xHigherPriorityTaskWoken );
+	vTaskNotifyGiveFromISR( CStm32FxxSerialDriver::xTaskToNotify[ num ], &xHigherPriorityTaskWoken );
 	
 	portYIELD_FROM_ISR( xHigherPriorityTaskWoken );
 }

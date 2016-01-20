@@ -14,6 +14,9 @@
 
 
 TaskHandle_t CStm32FxxSerialDriver::xTaskToNotify[ TOTAL_USART_NUM ];
+const char * CStm32FxxSerialDriver::txDataPtr[ TOTAL_USART_NUM ];
+int CStm32FxxSerialDriver::txSize[ TOTAL_USART_NUM ];
+USART_TypeDef *CStm32FxxSerialDriver::USARTn[ TOTAL_USART_NUM ];
 
 
 
@@ -63,10 +66,12 @@ TRetVal CStm32FxxSerialDriver::open()
 		
 		USART1->BRR = ( uint32_t )( (float)SYSTEM_CLOCK / ( float )USART1_DEFAULT_BAUDRATE );
 		
-		USARTn = USART1;
+		USARTn[ hdwNum ] = USART1;
 		
 		sendBuffSize = USART1_INSTANT_SEND_MAX_BYTE;
 		getBuffSize = USART1_INSTANT_GET_MAX_BYTE;
+		
+		NVIC_EnableIRQ( USART1_IRQn );
 		break;
 		
 		case N2:
@@ -79,7 +84,9 @@ TRetVal CStm32FxxSerialDriver::open()
 		
 		USART2->BRR = ( uint32_t )( (float)SYSTEM_CLOCK / ( float )USART2_DEFAULT_BAUDRATE );
 		
-		USARTn = USART2;
+		NVIC_EnableIRQ( USART2_IRQn );
+		
+		USARTn[ hdwNum ] = USART2;
 		
 		sendBuffSize = USART2_INSTANT_SEND_MAX_BYTE;
 		getBuffSize = USART2_INSTANT_GET_MAX_BYTE;
@@ -89,7 +96,7 @@ TRetVal CStm32FxxSerialDriver::open()
 	//buffPtr = ( uint8_t * )pvPortMalloc( sendBuffSize );
 	
 	
-	USARTn->CR1 |= USART_CR1_TE | USART_CR1_RE | USART_CR1_UE;
+	USARTn[ hdwNum ]->CR1 |= USART_CR1_TE | USART_CR1_RE | USART_CR1_UE;
 	
 	return rvOK;
 }
@@ -109,7 +116,14 @@ TRetVal CStm32FxxSerialDriver::write( const char * data, int size, int timeout )
 {
 	CStm32FxxSerialDriver::xTaskToNotify[ hdwNum ] = xTaskGetCurrentTaskHandle();
 	
+	txDataPtr[ hdwNum ] = data;
+	txSize[ hdwNum ] = size;
+	
+	USARTn[ hdwNum ]->CR1 |= USART_CR1_TXEIE;
+	
 	uint32_t ulNotificationValue = ulTaskNotifyTake( pdTRUE, pdMS_TO_TICKS( timeout ) );
+	
+	USARTn[ hdwNum ]->CR1 &= ~USART_CR1_TXEIE;
 	
 	return ulNotificationValue == 1 ? rvOK : rvTIME_OUT;
 }
@@ -153,7 +167,15 @@ void CStm32FxxSerialDriver::isrService( TUartNum num)
 {
 	BaseType_t xHigherPriorityTaskWoken = pdFALSE;
 	
-	vTaskNotifyGiveFromISR( CStm32FxxSerialDriver::xTaskToNotify[ num ], &xHigherPriorityTaskWoken );
+	if ( CStm32FxxSerialDriver::USARTn[ num ]->ISR & USART_ISR_TXE )
+	{
+		CStm32FxxSerialDriver::USARTn[ num ]->TDR = *CStm32FxxSerialDriver::txDataPtr[ num ]++;
+		if ( --CStm32FxxSerialDriver::txSize[ num ] == 0 )
+		{
+			CStm32FxxSerialDriver::USARTn[ num ]->CR1 &= ~USART_CR1_TXEIE;
+			vTaskNotifyGiveFromISR( CStm32FxxSerialDriver::xTaskToNotify[ num ], &xHigherPriorityTaskWoken );
+		}
+	}
 	
 	portYIELD_FROM_ISR( xHigherPriorityTaskWoken );
 }

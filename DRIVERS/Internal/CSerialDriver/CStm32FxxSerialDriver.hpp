@@ -25,8 +25,10 @@ class CStm32FxxSerialDriver : 	public CAbstractSerialDriver
 	
 	private:
 	TUartNum hdwNum;
-	USART_TypeDef *USARTn;
+	static USART_TypeDef *USARTn[ TOTAL_USART_NUM ];
 	static TaskHandle_t xTaskToNotify[ TOTAL_USART_NUM ];
+	static const char * txDataPtr[ TOTAL_USART_NUM ];
+	static int txSize[ TOTAL_USART_NUM ];
 	
 	
 	protected:

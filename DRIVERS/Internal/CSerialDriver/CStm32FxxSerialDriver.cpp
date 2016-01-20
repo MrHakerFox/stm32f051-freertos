@@ -50,8 +50,6 @@ Before using serial port you must call open() function
 */
 TRetVal CStm32FxxSerialDriver::open()
 {
-	int sendBuffSize, getBuffSize;
-	
 	RCC->AHBENR |= RCC_AHBENR_GPIOAEN;
 	
 	switch( hdwNum )
@@ -67,9 +65,6 @@ TRetVal CStm32FxxSerialDriver::open()
 		USART1->BRR = ( uint32_t )( (float)SYSTEM_CLOCK / ( float )USART1_DEFAULT_BAUDRATE );
 		
 		USARTn[ hdwNum ] = USART1;
-		
-		sendBuffSize = USART1_INSTANT_SEND_MAX_BYTE;
-		getBuffSize = USART1_INSTANT_GET_MAX_BYTE;
 		
 		NVIC_EnableIRQ( USART1_IRQn );
 		break;
@@ -87,9 +82,7 @@ TRetVal CStm32FxxSerialDriver::open()
 		NVIC_EnableIRQ( USART2_IRQn );
 		
 		USARTn[ hdwNum ] = USART2;
-		
-		sendBuffSize = USART2_INSTANT_SEND_MAX_BYTE;
-		getBuffSize = USART2_INSTANT_GET_MAX_BYTE;
+
 		break;
 	}
 	
@@ -177,5 +170,5 @@ void CStm32FxxSerialDriver::isrService( TUartNum num)
 		}
 	}
 	
-	portYIELD_FROM_ISR( xHigherPriorityTaskWoken );
+	portYIELD_FROM_ISR( true );
 }

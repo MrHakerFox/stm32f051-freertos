@@ -35,7 +35,7 @@ void cConsoleWrapper()
 	
 	for( ; ; )
 	{
-		retVal = serial.write( data, sizeof( data ), 100 );
+		retVal = serial.write( data, sizeof( data ) );
 		
 		if( retVal != rvOK )
 		{

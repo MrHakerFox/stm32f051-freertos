@@ -40,7 +40,7 @@ class CStm32FxxSerialDriver : 	public CAbstractSerialDriver
 	
 	TRetVal open();
 	
-	TRetVal write( const char * data, int size, int timeout = 0 );
+	TRetVal write( const char * data, int size, int timeout = USART_TX_TIMEOUT );
 	TRetVal read( char * data, int size, int * read, int timeout = 0 );
 	
 	TRetVal close();

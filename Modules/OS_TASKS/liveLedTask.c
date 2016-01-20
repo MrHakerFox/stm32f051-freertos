@@ -11,6 +11,18 @@
 
 
 
+enum TModuleWorkingMode
+{
+  	tmwmNormal,
+	tmwmNoLink,
+	tmwmHSError,
+};
+
+
+static enum TModuleWorkingMode moduleWorkingMode = tmwmHSError;
+
+
+
 void liveLedTask( void * pvParameters )
 {
 	RCC->AHBENR |= RCC_AHBENR_GPIOAEN;	
@@ -19,9 +31,33 @@ void liveLedTask( void * pvParameters )
     
 	for( ; ; )
 	{
-		delayMs( 500 );
-		SET_GPIO_SET( LIVE_LED_PORT, LIVE_LED_PIN );
-		delayMs( 500 );
-		SET_GPIO_CLR( LIVE_LED_PORT, LIVE_LED_PIN );
+	  	if ( moduleWorkingMode == tmwmNormal )
+		{
+			delayMs( 500 );
+			SET_GPIO_SET( LIVE_LED_PORT, LIVE_LED_PIN );
+			delayMs( 500 );
+			SET_GPIO_CLR( LIVE_LED_PORT, LIVE_LED_PIN );
+		}
+		
+	  	if ( moduleWorkingMode == tmwmNoLink )
+		{
+			delayMs( 100 );
+			SET_GPIO_SET( LIVE_LED_PORT, LIVE_LED_PIN );
+			delayMs( 100 );
+			SET_GPIO_CLR( LIVE_LED_PORT, LIVE_LED_PIN );
+		}
+		
+		if ( moduleWorkingMode == tmwmHSError )
+		{
+		  	SET_GPIO_CLR( LIVE_LED_PORT, LIVE_LED_PIN );
+			delayMs( 1000 );
+			SET_GPIO_SET( LIVE_LED_PORT, LIVE_LED_PIN );
+			delayMs( 300 );
+			
+			SET_GPIO_CLR( LIVE_LED_PORT, LIVE_LED_PIN );
+			delayMs( 300 );
+			SET_GPIO_SET( LIVE_LED_PORT, LIVE_LED_PIN );
+			delayMs( 1000 );
+		}		
 	}
 }

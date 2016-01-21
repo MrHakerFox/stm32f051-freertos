@@ -6,10 +6,9 @@
 
 CRingBuffer::CRingBuffer( int size )
 {
-	buffSize = size;
-#warning change to memmanager
-	//buffPtr = new uint8_t[ size ];
-	
+	buffSize = 0;
+	buffPtr = 0;
+	setSize( size );
 	flush();
 }
 
@@ -17,8 +16,7 @@ CRingBuffer::CRingBuffer( int size )
 
 CRingBuffer::~CRingBuffer()
 {
-#warning change to memmanager
-	//delete [] buffPtr;
+
 }
 
 
@@ -73,6 +71,6 @@ void CRingBuffer::flush()
 
 
 
-int CRingBuffer::copyTo( uint8_t * src )
+TRetVal CRingBuffer::copyTo( uint8_t * dst, int size, int * read, int timeout )
 {
 }

@@ -2076,9 +2076,6 @@
       </group>
       <group>
         <name>CRingBuffer</name>
-        <excluded>
-          <configuration>Debug</configuration>
-        </excluded>
         <file>
           <name>$PROJ_DIR$\Modules\Libs\CRingBuffer\CRingBuffer.cpp</name>
         </file>

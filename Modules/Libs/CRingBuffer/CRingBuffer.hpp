@@ -7,6 +7,10 @@
 
 
 
+#include <RetVals.hpp>
+
+
+
 class CRingBuffer
 {
 	private:
@@ -23,13 +27,15 @@ class CRingBuffer
 
 	public:
 	CRingBuffer( int size );
-	CRingBuffer() { buffPtr = 0; buffSize = 0; }
+	CRingBuffer() { buffPtr = 0; buffSize = 0; flush(); }
 	~CRingBuffer();
+	
+	void setSize( int s );
 	
 	void push( char c );
 	char pop();
 	
-	int copyTo( uint8_t * src );
+	TRetVal copyTo( uint8_t * dst, int size, int * read, int timeout );
 	
 	bool isFull() const;
 	bool isEmpty() const;

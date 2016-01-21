@@ -17,6 +17,7 @@ TaskHandle_t CStm32FxxSerialDriver::xTaskToNotify[ TOTAL_USART_NUM ];
 const char * CStm32FxxSerialDriver::txDataPtr[ TOTAL_USART_NUM ];
 int CStm32FxxSerialDriver::txSize[ TOTAL_USART_NUM ];
 USART_TypeDef *CStm32FxxSerialDriver::USARTn[ TOTAL_USART_NUM ];
+CRingBuffer CStm32FxxSerialDriver::rxRingBuffer[ TOTAL_USART_NUM ];
 
 
 
@@ -89,7 +90,7 @@ TRetVal CStm32FxxSerialDriver::open()
 	//buffPtr = ( uint8_t * )pvPortMalloc( sendBuffSize );
 	
 	
-	USARTn[ hdwNum ]->CR1 |= USART_CR1_TE | USART_CR1_RE | USART_CR1_UE;
+	USARTn[ hdwNum ]->CR1 |= USART_CR1_TE | USART_CR1_RE | USART_CR1_UE | USART_CR1_RXNEIE;
 	
 	return rvOK;
 }
@@ -101,7 +102,7 @@ Use the function to write some buffer
 
 @param *data - pointer to the data to be transmitted
 @param size - size of data buffer
-@param timeout - timeout (ms) for ALL the data
+@param timeout - timeout (ms) for ALL the data to be sent
 
 \return see RetVals.hpp file
 */
@@ -135,6 +136,7 @@ Use the function to read some data
 */
 TRetVal CStm32FxxSerialDriver::read( char * data, int size, int * read, int timeout )
 {
+	return rxRingBuffer[ hdwNum ].copyTo( ( uint8_t * )&data, size, read, timeout );
 }
 
 
@@ -160,6 +162,7 @@ void CStm32FxxSerialDriver::isrService( TUartNum num)
 {
 	BaseType_t xHigherPriorityTaskWoken = pdFALSE;
 	
+	/** TXE interrupt */
 	if ( CStm32FxxSerialDriver::USARTn[ num ]->ISR & USART_ISR_TXE )
 	{
 		CStm32FxxSerialDriver::USARTn[ num ]->TDR = *CStm32FxxSerialDriver::txDataPtr[ num ]++;
@@ -170,5 +173,12 @@ void CStm32FxxSerialDriver::isrService( TUartNum num)
 		}
 	}
 	
-	portYIELD_FROM_ISR( true );
+	/** RXNE interrupt */
+	if ( CStm32FxxSerialDriver::USARTn[ num ]->ISR & USART_ISR_RXNE )
+	{
+		uint8_t byte = CStm32FxxSerialDriver::USARTn[ num ]->RDR;
+		CStm32FxxSerialDriver::rxRingBuffer[ num ].push( byte );
+	}
+	
+	portYIELD_FROM_ISR( xHigherPriorityTaskWoken );
 }

@@ -1,3 +1,9 @@
+/**
+	\brief Debug console task
+*/
+
+
+
 #include "tasksConfig.h"
 
 

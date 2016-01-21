@@ -1,3 +1,9 @@
+/**
+\brief Setup task
+This task creates all needed task then is deletet by itselfs
+*/
+
+
 #include "tasksConfig.h"
 
 

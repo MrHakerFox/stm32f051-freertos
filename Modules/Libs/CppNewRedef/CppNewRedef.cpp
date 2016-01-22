@@ -2,10 +2,10 @@
 
 
 
-//void* operator new(size_t sz)
-//{
-//    return pvPortMalloc(sz);
-//}
+void* operator new(size_t sz)
+{
+    return pvPortMalloc(sz);
+}
 void* operator new[](size_t sz)
 {
     return pvPortMalloc(sz);

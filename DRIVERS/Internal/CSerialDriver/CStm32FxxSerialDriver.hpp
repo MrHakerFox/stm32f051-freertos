@@ -29,7 +29,7 @@ class CStm32FxxSerialDriver : 	public CAbstractSerialDriver
 	static TaskHandle_t xTaskToNotify[ TOTAL_USART_NUM ];
 	static const char * txDataPtr[ TOTAL_USART_NUM ];
 	static int txSize[ TOTAL_USART_NUM ];
-	static CRingBuffer rxRingBuffer[ TOTAL_USART_NUM ];
+	static CRingBuffer * rxRingBuffer[ TOTAL_USART_NUM ];
 	
 	
 	protected:

@@ -17,7 +17,7 @@ TaskHandle_t CStm32FxxSerialDriver::xTaskToNotify[ TOTAL_USART_NUM ];
 const char * CStm32FxxSerialDriver::txDataPtr[ TOTAL_USART_NUM ];
 int CStm32FxxSerialDriver::txSize[ TOTAL_USART_NUM ];
 USART_TypeDef *CStm32FxxSerialDriver::USARTn[ TOTAL_USART_NUM ];
-CRingBuffer CStm32FxxSerialDriver::rxRingBuffer[ TOTAL_USART_NUM ];
+CRingBuffer * CStm32FxxSerialDriver::rxRingBuffer[ TOTAL_USART_NUM ];
 
 
 
@@ -67,6 +67,8 @@ TRetVal CStm32FxxSerialDriver::open()
 		
 		USARTn[ hdwNum ] = USART1;
 		
+		rxRingBuffer[ hdwNum ] = new CRingBuffer( USART1_INSTANT_GET_MAX_BYTE );
+		
 		NVIC_EnableIRQ( USART1_IRQn );
 		break;
 		
@@ -80,15 +82,15 @@ TRetVal CStm32FxxSerialDriver::open()
 		
 		USART2->BRR = ( uint32_t )( (float)SYSTEM_CLOCK / ( float )USART2_DEFAULT_BAUDRATE );
 		
+		rxRingBuffer[ hdwNum ] = new CRingBuffer( USART2_INSTANT_GET_MAX_BYTE );
+		
 		NVIC_EnableIRQ( USART2_IRQn );
 		
 		USARTn[ hdwNum ] = USART2;
 
 		break;
 	}
-	
-	//buffPtr = ( uint8_t * )pvPortMalloc( sendBuffSize );
-	
+
 	
 	USARTn[ hdwNum ]->CR1 |= USART_CR1_TE | USART_CR1_RE | USART_CR1_UE | USART_CR1_RXNEIE;
 	
@@ -136,7 +138,7 @@ Use the function to read some data
 */
 TRetVal CStm32FxxSerialDriver::read( char * data, int size, int * read, int timeout )
 {
-	return rxRingBuffer[ hdwNum ].copyTo( ( uint8_t * )&data, size, read, timeout );
+	return rxRingBuffer[ hdwNum ]->copyTo( ( uint8_t * )&data, size, read, timeout );
 }
 
 
@@ -177,7 +179,7 @@ void CStm32FxxSerialDriver::isrService( TUartNum num)
 	if ( CStm32FxxSerialDriver::USARTn[ num ]->ISR & USART_ISR_RXNE )
 	{
 		uint8_t byte = CStm32FxxSerialDriver::USARTn[ num ]->RDR;
-		CStm32FxxSerialDriver::rxRingBuffer[ num ].push( byte );
+		CStm32FxxSerialDriver::rxRingBuffer[ num ]->push( byte );
 	}
 	
 	portYIELD_FROM_ISR( xHigherPriorityTaskWoken );

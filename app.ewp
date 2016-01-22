@@ -2071,7 +2071,7 @@
       <group>
         <name>CppNewRedef</name>
         <file>
-          <name>$PROJ_DIR$\Modules\Libs\CppNewRedef\CppNewRedef.c</name>
+          <name>$PROJ_DIR$\Modules\Libs\CppNewRedef\CppNewRedef.cpp</name>
         </file>
       </group>
       <group>

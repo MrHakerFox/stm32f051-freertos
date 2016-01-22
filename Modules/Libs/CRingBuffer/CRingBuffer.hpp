@@ -8,13 +8,15 @@
 
 
 #include <RetVals.hpp>
+#include <FreeRTOS.h>
+#include <semphr.h>
 
 
 
 class CRingBuffer
 {
 	private:
-
+	SemaphoreHandle_t dataAvailSemaphore;
 
 	
 	protected:
@@ -27,7 +29,7 @@ class CRingBuffer
 
 	public:
 	CRingBuffer( int size );
-	CRingBuffer() { buffPtr = 0; buffSize = 0; flush(); }
+	CRingBuffer();
 	~CRingBuffer();
 	
 	void setSize( int s );

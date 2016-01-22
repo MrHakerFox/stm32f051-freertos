@@ -10,6 +10,20 @@ CRingBuffer::CRingBuffer( int size )
 	buffPtr = 0;
 	setSize( size );
 	flush();
+	
+	dataAvailSemaphore = xSemaphoreCreateBinary();
+}
+
+
+
+CRingBuffer::CRingBuffer()
+{
+	buffPtr = 0;
+	buffSize = 0;
+	
+	dataAvailSemaphore = xSemaphoreCreateBinary();
+	
+	flush();	
 }
 
 
@@ -27,7 +41,7 @@ void CRingBuffer::push( char c )
 	
 	head++;
 	
-	if( head == getSize() )
+	if( head >= getSize() )
 	{
 		head = 0;
 	}
@@ -40,7 +54,7 @@ char CRingBuffer::pop()
 	char result = *( buffPtr + tail );
 	
 	tail++;
-	if( tail == getSize() )
+	if( tail >= getSize() )
 	{
 		tail = 0;
 	}
@@ -67,6 +81,12 @@ void CRingBuffer::flush()
 {
 	head = 0;
 	tail = 0;	
+}
+
+
+
+void CRingBuffer::setSize( int s )
+{
 }
 
 

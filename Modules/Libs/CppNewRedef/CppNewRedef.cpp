@@ -1,3 +1,9 @@
+/**
+	\brief Redefines all new and delete operators to be able to work with FreeRTOS heap manager
+*/
+
+
+
 #include <FreeRTOS.h>
 
 

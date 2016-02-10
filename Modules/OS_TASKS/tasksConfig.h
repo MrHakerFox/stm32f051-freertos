@@ -13,7 +13,7 @@ void liveLedTask( void * pvParameters );
 
 
 #define SETUP_TASK_STACK_SIZE	100
-#define CONSOLE_TASK_STACK_SIZE	100
+#define CONSOLE_TASK_STACK_SIZE	256
 #define LIVELED_TASK_STACK_SIZE	100
 
 

@@ -16,14 +16,20 @@
 class CRingBuffer
 {
 	private:
-	
-	
+	uint8_t * pBuff;
+	int pTail;
+	int pHead;
 	
 	protected:
 	
 	
 	
 	public:
+	CRingBuffer( int size );
+	~CRingBuffer();
+	
+	TRetVal copyTo( uint8_t * dest, int size, int * actAmount );
+	TRetVal push( uint8_t byte );
 };
 
 

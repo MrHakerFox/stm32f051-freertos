@@ -21,7 +21,7 @@ template< class TIoCtlNum, class TIoCtlParam >
 class CAbstractTemplateDriver
 {
 	private:
-	
+
 	
 	
 	protected:

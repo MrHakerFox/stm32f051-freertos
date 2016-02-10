@@ -67,7 +67,7 @@ TRetVal CStm32FxxSerialDriver::open()
 		
 		USARTn[ hdwNum ] = USART1;
 		
-		rxRingBuffer[ hdwNum ] = new CRingBuffer( USART1_INSTANT_GET_MAX_BYTE );
+		//rxRingBuffer[ hdwNum ] = new CRingBuffer( USART1_INSTANT_GET_MAX_BYTE );
 		
 		NVIC_EnableIRQ( USART1_IRQn );
 		break;
@@ -82,7 +82,7 @@ TRetVal CStm32FxxSerialDriver::open()
 		
 		USART2->BRR = ( uint32_t )( (float)SYSTEM_CLOCK / ( float )USART2_DEFAULT_BAUDRATE );
 		
-		rxRingBuffer[ hdwNum ] = new CRingBuffer( USART2_INSTANT_GET_MAX_BYTE );
+		//rxRingBuffer[ hdwNum ] = new CRingBuffer( USART2_INSTANT_GET_MAX_BYTE );
 		
 		NVIC_EnableIRQ( USART2_IRQn );
 		
@@ -138,7 +138,7 @@ Use the function to read some data
 */
 TRetVal CStm32FxxSerialDriver::read( char * data, int size, int * read, int timeout )
 {
-	return rxRingBuffer[ hdwNum ]->copyTo( ( uint8_t * )&data, size, read, timeout );
+	//return rxRingBuffer[ hdwNum ]->copyTo( ( uint8_t * )&data, size, read, timeout );
 }
 
 
@@ -165,13 +165,14 @@ void CStm32FxxSerialDriver::isrService( TUartNum num)
 	BaseType_t xHigherPriorityTaskWoken = pdFALSE;
 	
 	/** TXE interrupt */
-	if ( CStm32FxxSerialDriver::USARTn[ num ]->ISR & USART_ISR_TXE )
+	while ( CStm32FxxSerialDriver::USARTn[ num ]->ISR & USART_ISR_TXE )
 	{
 		CStm32FxxSerialDriver::USARTn[ num ]->TDR = *CStm32FxxSerialDriver::txDataPtr[ num ]++;
 		if ( --CStm32FxxSerialDriver::txSize[ num ] == 0 )
 		{
 			CStm32FxxSerialDriver::USARTn[ num ]->CR1 &= ~USART_CR1_TXEIE;
 			vTaskNotifyGiveFromISR( CStm32FxxSerialDriver::xTaskToNotify[ num ], &xHigherPriorityTaskWoken );
+			break;
 		}
 	}
 	
@@ -179,7 +180,7 @@ void CStm32FxxSerialDriver::isrService( TUartNum num)
 	if ( CStm32FxxSerialDriver::USARTn[ num ]->ISR & USART_ISR_RXNE )
 	{
 		uint8_t byte = CStm32FxxSerialDriver::USARTn[ num ]->RDR;
-		CStm32FxxSerialDriver::rxRingBuffer[ num ]->push( byte );
+		//CStm32FxxSerialDriver::rxRingBuffer[ num ]->push( byte );
 	}
 	
 	portYIELD_FROM_ISR( xHigherPriorityTaskWoken );

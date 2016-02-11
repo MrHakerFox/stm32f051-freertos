@@ -10,9 +10,8 @@ CRingBuffer::CRingBuffer( int s )
 {
 	size = s;
 	pBuff = new uint8_t [ size ];
-	pTail = 0;
-	pHead = 0;
-	filledSize = 0;
+	
+	flush();
 }
 
 
@@ -90,4 +89,18 @@ TRetVal CRingBuffer::push( uint8_t byte )
 	taskEXIT_CRITICAL();
 	
   	return rvOK;
+}
+
+
+
+/*!
+Function removes all available elements
+*/
+void CRingBuffer::flush()
+{
+	taskENTER_CRITICAL();
+	pTail = 0;
+	pHead = 0;
+	filledSize = 0;
+	taskEXIT_CRITICAL();
 }

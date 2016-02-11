@@ -32,6 +32,8 @@ class CRingBuffer
 	
 	TRetVal copyTo( uint8_t * dest, int size, int * actAmount );
 	TRetVal push( uint8_t byte );
+	
+	void flush();
 };
 
 

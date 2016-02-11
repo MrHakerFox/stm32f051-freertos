@@ -13,8 +13,8 @@
 #include <FreeRTOS.h>
 
 
-TaskHandle_t CStm32FxxSerialDriver::xTaskToNotifyTx[ TOTAL_USART_NUM ];
-TaskHandle_t CStm32FxxSerialDriver::xTaskToNotifyRx[ TOTAL_USART_NUM ];
+SemaphoreHandle_t CStm32FxxSerialDriver::rxSemaphore[ TOTAL_USART_NUM ];
+SemaphoreHandle_t CStm32FxxSerialDriver::txSemaphore[ TOTAL_USART_NUM ];
 const char * CStm32FxxSerialDriver::txDataPtr[ TOTAL_USART_NUM ];
 int CStm32FxxSerialDriver::txSize[ TOTAL_USART_NUM ];
 USART_TypeDef *CStm32FxxSerialDriver::USARTn[ TOTAL_USART_NUM ];
@@ -70,6 +70,9 @@ TRetVal CStm32FxxSerialDriver::open()
 		
 		rxRingBuffer[ hdwNum ] = new CRingBuffer( USART1_INSTANT_GET_MAX_BYTE );
 		
+		txSemaphore[ hdwNum ] = xSemaphoreCreateBinary();
+		rxSemaphore[ hdwNum ] = xSemaphoreCreateBinary();
+		
 		USARTn[ hdwNum ]->CR1 |= USART_CR1_RXNEIE;
 		
 		NVIC_EnableIRQ( USART1_IRQn );
@@ -86,6 +89,9 @@ TRetVal CStm32FxxSerialDriver::open()
 		USART2->BRR = ( uint32_t )( (float)SYSTEM_CLOCK / ( float )USART2_DEFAULT_BAUDRATE );
 		
 		rxRingBuffer[ hdwNum ] = new CRingBuffer( USART2_INSTANT_GET_MAX_BYTE );
+		
+		txSemaphore[ hdwNum ] = xSemaphoreCreateBinary();
+		rxSemaphore[ hdwNum ] = xSemaphoreCreateBinary();
 		
 		NVIC_EnableIRQ( USART2_IRQn );
 		
@@ -117,19 +123,17 @@ TRetVal CStm32FxxSerialDriver::write( const char * data, int size, int timeout )
 	{
 	  	return rvOK;
 	}
-  
-	CStm32FxxSerialDriver::xTaskToNotifyTx[ hdwNum ] = xTaskGetCurrentTaskHandle();
 	
 	txDataPtr[ hdwNum ] = data;
 	txSize[ hdwNum ] = size;
 	
 	USARTn[ hdwNum ]->CR1 |= USART_CR1_TXEIE;
 	
-	uint32_t ulNotificationValue = ulTaskNotifyTake( pdTRUE, pdMS_TO_TICKS( timeout ) );
+	BaseType_t result = xSemaphoreTake( txSemaphore[ hdwNum ], timeout );
 	
 	USARTn[ hdwNum ]->CR1 &= ~USART_CR1_TXEIE;
 	
-	return ulNotificationValue == 1 ? rvOK : rvTIME_OUT;
+	return result == pdTRUE ? rvOK : rvTIME_OUT;
 }
 
 
@@ -146,15 +150,19 @@ Use the function to read some data
 */
 TRetVal CStm32FxxSerialDriver::read( char * data, int size, int * read, int timeout )
 {
-  	CStm32FxxSerialDriver::xTaskToNotifyRx[ hdwNum ] = xTaskGetCurrentTaskHandle();
+	BaseType_t result = xSemaphoreTake( rxSemaphore[ hdwNum ], timeout );
 	
-	uint32_t ulNotificationValue = ulTaskNotifyTake( pdTRUE, pdMS_TO_TICKS( timeout ) );
+	if ( result == pdFALSE )
+	{
+		USARTn[ hdwNum ]->CR1 |= USART_CR1_RXNEIE;
+		return rvTIME_OUT;
+	}
 	
 	rxRingBuffer[ hdwNum ]->copyTo( ( uint8_t * )&data, size, read );
 	
 	USARTn[ hdwNum ]->CR1 |= USART_CR1_RXNEIE;
 	
-	return ulNotificationValue == 1 ? rvOK : rvTIME_OUT;
+	return rvOK;
 }
 
 
@@ -187,7 +195,7 @@ void CStm32FxxSerialDriver::isrService( TUartNum num)
 		if ( --CStm32FxxSerialDriver::txSize[ num ] == 0 )
 		{
 			CStm32FxxSerialDriver::USARTn[ num ]->CR1 &= ~USART_CR1_TXEIE;
-			vTaskNotifyGiveFromISR( CStm32FxxSerialDriver::xTaskToNotifyTx[ num ], &xHigherPriorityTaskWoken );
+			xSemaphoreGiveFromISR( CStm32FxxSerialDriver::txSemaphore[ num ], &xHigherPriorityTaskWoken );
 			break;
 		}
 	}
@@ -199,7 +207,7 @@ void CStm32FxxSerialDriver::isrService( TUartNum num)
 		if ( byte == '\n' )
 		{
 		  	USARTn[ num ]->CR1 &= ~USART_CR1_RXNEIE;
-			vTaskNotifyGiveFromISR( CStm32FxxSerialDriver::xTaskToNotifyRx[ num ], &xHigherPriorityTaskWoken );
+			xSemaphoreGiveFromISR( CStm32FxxSerialDriver::rxSemaphore[ num ], &xHigherPriorityTaskWoken );
 			break;
 		}
 		CStm32FxxSerialDriver::rxRingBuffer[ num ]->push( byte );

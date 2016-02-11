@@ -6,11 +6,13 @@
 
 
 
-CRingBuffer::CRingBuffer( int size )
+CRingBuffer::CRingBuffer( int s )
 {
+	size = s;
 	pBuff = new uint8_t [ size ];
 	pTail = 0;
 	pHead = 0;
+	filledSize = 0;
 }
 
 
@@ -35,11 +37,28 @@ Function copies all available data from its internal buffer to the destanation
 */
 TRetVal CRingBuffer::copyTo( uint8_t * dest, int size, int * actAmount )
 {
-	if( actAmount )
+	if ( !dest )
 	{
-	  	*actAmount = 0;
+		return rvSETTING_ERROR;
 	}
 	
+	taskENTER_CRITICAL();
+	
+	if( actAmount )
+	{
+		*actAmount = filledSize;
+	}
+	
+	while( filledSize-- )
+	{
+		*dest++ = *( pBuff + pTail );
+		if ( ++pTail >= size )
+		{
+			pTail = 0;
+		}
+	}
+	
+	taskEXIT_CRITICAL();
 	return rvOK;
 }
 
@@ -54,5 +73,21 @@ Function pushes a byte into internal buffer
 */
 TRetVal CRingBuffer::push( uint8_t byte )
 {
+	taskENTER_CRITICAL();
+	
+	*( pBuff + pHead ) = byte;
+	
+	if ( ++pHead >= size )
+	{
+		pHead = 0;
+	}
+	
+	if ( ++filledSize >= size )
+	{
+		filledSize = size;
+	}
+	
+	taskEXIT_CRITICAL();
+	
   	return rvOK;
 }

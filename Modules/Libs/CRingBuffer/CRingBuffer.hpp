@@ -16,16 +16,18 @@
 class CRingBuffer
 {
 	private:
+	int size;
+	int filledSize;	/** How many bytes are stored int he buff */
 	uint8_t * pBuff;
 	int pTail;
-	int pHead;
+	int pHead;	/** Points to current free element */
 	
 	protected:
 	
 	
 	
 	public:
-	CRingBuffer( int size );
+	CRingBuffer( int s );
 	~CRingBuffer();
 	
 	TRetVal copyTo( uint8_t * dest, int size, int * actAmount );

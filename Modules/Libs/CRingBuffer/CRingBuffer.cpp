@@ -23,6 +23,16 @@ CRingBuffer::~CRingBuffer()
 
 
 
+
+/*!
+Function copies all available data from its internal buffer to the destanation
+
+@param *data - to where available data will be copied
+@param size - number of bytes that can be stored at destanation
+@param *actAmount - actual number of bytes available to copy
+
+\return see RetVals.hpp file
+*/
 TRetVal CRingBuffer::copyTo( uint8_t * dest, int size, int * actAmount )
 {
 	if( actAmount )
@@ -35,6 +45,13 @@ TRetVal CRingBuffer::copyTo( uint8_t * dest, int size, int * actAmount )
 
 
 
+/*!
+Function pushes a byte into internal buffer
+
+@param byte data byte
+
+\return see RetVals.hpp file
+*/
 TRetVal CRingBuffer::push( uint8_t byte )
 {
   	return rvOK;

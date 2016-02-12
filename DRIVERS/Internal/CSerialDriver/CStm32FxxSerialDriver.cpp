@@ -154,7 +154,6 @@ TRetVal CStm32FxxSerialDriver::read( char * data, int size, int * read, int time
 	
 	if ( result == pdFALSE )
 	{
-		USARTn[ hdwNum ]->CR1 |= USART_CR1_RXNEIE;
 		return rvTIME_OUT;
 	}
 	

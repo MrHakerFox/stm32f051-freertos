@@ -50,6 +50,19 @@ TRetVal CRingBuffer::copyTo( uint8_t * dest, int size, int * actAmount )
 		*actAmount = amount;
 	}
 	
+	if ( filledSize == buffSize )
+	{
+	  	// pTail = pHead - buffSize
+	  	if ( pHead == buffSize - 1 )
+		{
+		  	pTail = 0;
+		}
+		else
+		{
+		  	pTail = pHead + 1;
+		}
+	}
+	
 	while( amount-- )
 	{
 		*dest++ = *( pBuff + pTail );
@@ -57,6 +70,7 @@ TRetVal CRingBuffer::copyTo( uint8_t * dest, int size, int * actAmount )
 		{
 			pTail = 0;
 		}
+		filledSize--;
 	}
 	
 	taskEXIT_CRITICAL();

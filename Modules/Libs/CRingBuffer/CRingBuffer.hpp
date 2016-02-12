@@ -16,7 +16,7 @@
 class CRingBuffer
 {
 	private:
-	int size;
+	int buffSize;
 	int filledSize;	/** How many bytes are stored int he buff */
 	uint8_t * pBuff;
 	int pTail;

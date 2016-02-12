@@ -8,8 +8,8 @@
 
 CRingBuffer::CRingBuffer( int s )
 {
-	size = s;
-	pBuff = new uint8_t [ size ];
+	buffSize = s;
+	pBuff = new uint8_t [ buffSize ];
 	
 	flush();
 }
@@ -43,15 +43,17 @@ TRetVal CRingBuffer::copyTo( uint8_t * dest, int size, int * actAmount )
 	
 	taskENTER_CRITICAL();
 	
+	int amount = filledSize > size ? size : filledSize;
+	  
 	if( actAmount )
 	{
-		*actAmount = filledSize;
+		*actAmount = amount;
 	}
 	
-	while( filledSize-- )
+	while( amount-- )
 	{
 		*dest++ = *( pBuff + pTail );
-		if ( ++pTail >= size )
+		if ( ++pTail >= buffSize )
 		{
 			pTail = 0;
 		}
@@ -76,14 +78,14 @@ TRetVal CRingBuffer::push( uint8_t byte )
 	
 	*( pBuff + pHead ) = byte;
 	
-	if ( ++pHead >= size )
+	if ( ++pHead >= buffSize )
 	{
 		pHead = 0;
 	}
 	
-	if ( ++filledSize >= size )
+	if ( ++filledSize >= buffSize )
 	{
-		filledSize = size;
+		filledSize = buffSize;
 	}
 	
 	taskEXIT_CRITICAL();

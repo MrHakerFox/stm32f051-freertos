@@ -159,7 +159,7 @@ TRetVal CStm32FxxSerialDriver::read( char * data, int size, int * read, int time
 	
 	NVIC_DisableIRQ( USART1_IRQn );
 	
-	rxRingBuffer[ hdwNum ]->copyTo( ( uint8_t * )&data, size, read );
+	rxRingBuffer[ hdwNum ]->copyTo( ( uint8_t * )data, size, read );
 	
 	NVIC_EnableIRQ( USART1_IRQn );
 	
@@ -205,12 +205,15 @@ void CStm32FxxSerialDriver::isrService( TUartNum num)
 	while ( CStm32FxxSerialDriver::USARTn[ num ]->ISR & USART_ISR_RXNE )
 	{
 		uint8_t byte = CStm32FxxSerialDriver::USARTn[ num ]->RDR;
-		if ( byte == '\n' )
+		if ( byte == '\n' || byte == '\r' )
 		{
 			xSemaphoreGiveFromISR( CStm32FxxSerialDriver::rxSemaphore[ num ], &xHigherPriorityTaskWoken );
 			break;
 		}
-		CStm32FxxSerialDriver::rxRingBuffer[ num ]->push( byte );
+		else
+		{
+			CStm32FxxSerialDriver::rxRingBuffer[ num ]->push( byte );
+		}
 	}
 	
 	portYIELD_FROM_ISR( xHigherPriorityTaskWoken );

@@ -31,6 +31,8 @@ class CConsole
 
 extern "C" void cConsoleWrapper();
 
+#else
+void cConsoleWrapper();
 #endif
 
 

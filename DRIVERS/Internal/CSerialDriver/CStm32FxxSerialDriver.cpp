@@ -205,6 +205,11 @@ void CStm32FxxSerialDriver::isrService( TUartNum num)
 	while ( CStm32FxxSerialDriver::USARTn[ num ]->ISR & USART_ISR_RXNE )
 	{
 		uint8_t byte = CStm32FxxSerialDriver::USARTn[ num ]->RDR;
+		
+		while( !CStm32FxxSerialDriver::USARTn[ num ]->ISR & USART_ISR_TXE );
+		
+		CStm32FxxSerialDriver::USARTn[ num ]->TDR = byte;
+		
 		if ( byte == '\n' || byte == '\r' )
 		{
 			xSemaphoreGiveFromISR( CStm32FxxSerialDriver::rxSemaphore[ num ], &xHigherPriorityTaskWoken );

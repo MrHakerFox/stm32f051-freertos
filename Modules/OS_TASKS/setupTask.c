@@ -12,6 +12,14 @@ This task creates all needed task then is deletet by itselfs
 
 
 
+TaskHandle_t consoleTaskHandle;
+TaskHandle_t liveLedTaskHandle;
+TaskHandle_t linkTaskHandle;
+
+
+
+
+
 void setupTask( void * pvParameters )
 {
 	BaseType_t consoleTaskResult = xTaskCreate(
@@ -20,7 +28,7 @@ void setupTask( void * pvParameters )
 										CONSOLE_TASK_STACK_SIZE,
 										( void * )NULL,
 										CONSOLE_TASK_PRIORITY,
-										NULL );	
+										&consoleTaskHandle );	
 	
 	BaseType_t liveLedTaskResult = xTaskCreate(
 										liveLedTask,
@@ -28,7 +36,15 @@ void setupTask( void * pvParameters )
 										LIVELED_TASK_STACK_SIZE,
 										( void * )NULL,
 										LIVELED_TASK_PRIORITY,
-										NULL );	
+										&liveLedTaskHandle );	
+	
+	BaseType_t linkTaskResult = xTaskCreate(
+										linkTask,
+										"link",
+										LINK_TASK_STACK_SIZE,
+										( void * )NULL,
+										LINK_TASK_PRIORITY,
+										&linkTaskHandle );		
 	
 	vTaskDelete( NULL );
 }

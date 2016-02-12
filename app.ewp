@@ -2090,6 +2090,9 @@
         <name>$PROJ_DIR$\Modules\OS_TASKS\consoleTask.c</name>
       </file>
       <file>
+        <name>$PROJ_DIR$\Modules\OS_TASKS\linkTask.c</name>
+      </file>
+      <file>
         <name>$PROJ_DIR$\Modules\OS_TASKS\liveLedTask.c</name>
       </file>
       <file>
@@ -2107,6 +2110,9 @@
       <file>
         <name>$PROJ_DIR$\Modules\Post\Post.h</name>
       </file>
+    </group>
+    <group>
+      <name>TARGET</name>
     </group>
   </group>
   <file>

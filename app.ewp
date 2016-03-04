@@ -312,8 +312,11 @@
           <state>$PROJ_DIR$\Modules\Post</state>
           <state>$PROJ_DIR$\Modules\OS_TASKS</state>
           <state>$PROJ_DIR$\Modules\CConsole</state>
+          <state>$PROJ_DIR$\Modules\FreeRTOS_CLI</state>
+          <state>$PROJ_DIR$\Modules\FreeRTOS_CLI\commands</state>
           <state>$PROJ_DIR$\Modules\LIbs\CRingBuffer</state>
           <state>$PROJ_DIR$\Modules\LIbs\CppNewRedef</state>
+          <state>$PROJ_DIR$\Modules\LIbs\MemMan</state>
         </option>
         <option>
           <name>CCStdIncCheck</name>
@@ -2067,6 +2070,27 @@
       </file>
     </group>
     <group>
+      <name>FreeRTOS_CLI</name>
+      <group>
+        <name>commands</name>
+        <file>
+          <name>$PROJ_DIR$\Modules\FreeRTOS_CLI\Commands\commands.h</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$\Modules\FreeRTOS_CLI\Commands\mem.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$\Modules\FreeRTOS_CLI\Commands\tsklst.c</name>
+        </file>
+      </group>
+      <file>
+        <name>$PROJ_DIR$\Modules\FreeRTOS_CLI\FreeRTOS_CLI.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\Modules\FreeRTOS_CLI\FreeRTOS_CLI.h</name>
+      </file>
+    </group>
+    <group>
       <name>Libs</name>
       <group>
         <name>CppNewRedef</name>
@@ -2081,6 +2105,15 @@
         </file>
         <file>
           <name>$PROJ_DIR$\Modules\Libs\CRingBuffer\CRingBuffer.hpp</name>
+        </file>
+      </group>
+      <group>
+        <name>MemMan</name>
+        <file>
+          <name>$PROJ_DIR$\Modules\Libs\MemMan\HEAP_Z.C</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$\Modules\Libs\MemMan\heap_z.h</name>
         </file>
       </group>
     </group>

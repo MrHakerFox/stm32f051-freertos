@@ -98,6 +98,9 @@ TRetVal CStm32FxxSerialDriver::open()
 		USARTn[ hdwNum ] = USART2;
 
 		break;
+		
+		default:
+		return rvSETTING_ERROR;
 	}
 
 	
